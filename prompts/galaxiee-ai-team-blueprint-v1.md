@@ -8,13 +8,80 @@
 |---|---|
 | Products | Commercial products, price PKR 20,000 se 500,000 |
 | Data | Shopify + Excel sheet |
+| Couriers | Leopards, PostEx, Pakistan Post Office |
 | Courier charges | Normal parcel PKR 220, weight par PKR 80 per kg |
-| Govt tax | 4% alag |
+| Govt tax | Har COD order par 4% |
 | RTO (wapas aane wale parcel) | 15–20% |
+| Ads | Meta par chal rahe hain. TikTok aur Google ka setup ho chuka hai, ads abhi shuru karne hain |
 | Time | Roz 1–2 ghante |
 | Budget | Team achha kaam kare to budget ka masla nahi |
 | Achha / bura din | 50+ orders bohat achha, 20 se kam bura |
-| Courier names, product cost, product weight, ad spend | **data missing** |
+| Product cost, product weight, courier return charge | **data missing** (Shopify mein bhi khaali hai) |
+
+**Shopify se asli data (20 Aug – 18 Nov 2026, 90 din):**
+| Cheez | Number |
+|---|---|
+| Total orders | 1,158 (roz ~13) |
+| Cancelled orders | **511 (44%)** |
+| Shipped orders | 623 |
+| Gross sales | PKR 38,468,173 |
+| Cancel/return ki wajah se wapas | PKR 20,382,091 (53%) |
+| Net sales | PKR 17,758,541 |
+| Average order (Oct–Nov) | ~PKR 37,600 |
+| Shopify mein "paid" orders | Sirf 14. Baqi 633 "pending" hain, chahe deliver ho chuke hon |
+
+> **Sab se bara leak:** RTO nahi, **cancellation** hai. 100 mein se 44 order ship hone se pehle hi cancel ho jate hain. Shipped orders par 15–20% RTO lagayein to 1,158 mein se sirf ~500 orders deliver hue, yani taqreeban 43%. Isliye Confirmation Agent ab Week 2 ki pehli priority hai.
+
+**Shopify data mein masle (system banane se pehle theek karne honge):**
+- Kisi product mein **cost per item** nahi bhara, aur sab ka **weight 0 kg** hai. Inke baghair profit ka hisaab nahi ho sakta.
+- Stock ke numbers asli nahi lagte. Misaal: Dyson Airstrait ke 1,319 units × PKR 79,000 = PKR 10.4 crore. Asal stock count karke Shopify mein theek karna hoga, warna "total assets" galat aayenge.
+- "Philips Lumea 9900": 5 orders mein 110 units, gross PKR 4.3M lekin net sirf PKR 39,000. Ye test ya fake orders lagte hain.
+- 78 orders bina product naam ke hain (PKR 1.3M). Shayad custom/draft orders ya delete hue products.
+
+---
+
+## 0. Final system: "Galaxiee Command Center" — ye aapke liye kya karega
+
+Jab poora system ban jayega (Week 8 tak), to aap phone par ek screen kholenge aur ye sab dikhega:
+
+**1. Aapke business ki total value (Total Assets)**
+| Hissa | Kahan se aayega | Kitna "live" |
+|---|---|---|
+| Bank + cash in hand | Aap khud likhenge (2 minute) | Roz/hafte mein ek baar |
+| COD cash courier ke paas (Leopards, PostEx, Post Office) | Courier portal ki file/API | Roz |
+| Raste mein parcels (cost par) | Shopify + courier | Roz |
+| Godown ka stock (cost par) | Shopify inventory × cost per item | Live (stock theek hone ke baad) |
+| **Minus:** supplier ka udhaar, ads ke bill | Aap likhenge + ad accounts | Roz/hafte |
+| **= Net business value** | Cash & Assets Agent hisaab lagayega | Roz subah |
+
+**2. Asal profit:** aaj, is hafte aur is mahine ka. Product, courier, city aur ad platform (Meta, TikTok, Google) ke hisaab se: kis cheez se paisa ban raha hai aur kahan doob raha hai.
+
+**3. Order ka poora safar:** placed → confirmed → cancelled → shipped → delivered → RTO → cash received. Har step par kitne orders aur kitna paisa hai.
+
+**4. Kya karna hai:** roz "Aaj ke top 3 kaam", har ek ke saath PKR mein fayda. Misaal: "PostEx ke paas PKR 4.2 lakh 9 din se pending hai, aaj call karein."
+
+**5. Alerts:** cash 7 din se zyada phansa ho, kisi city mein RTO barh jaye, stock khatam hone wala ho, ya kisi ad ka kharcha profit se zyada ho.
+
+**"Real time" ki imaandar tasveer:**
+- **Live:** Shopify orders aur Meta ads. Ye dono connector se seedhe aate hain.
+- **Roz subah:** Leopards, PostEx aur Post Office ka status, aur TikTok/Google ads. Shuru mein file upload, baad mein Leopards aur PostEx ki API se automatic (unki merchant API hai). Post Office ka data shayad hamesha manual rahega.
+- **Aap likhenge:** bank balance aur supplier ka udhaar. Isse koi software khud nahi jaan sakta.
+
+**Agents (final team, 8 agents, ek ek karke ON honge):**
+| # | Agent | Kab ON | Kaam |
+|---|---|---|---|
+| 1 | Team Lead | Week 1 | Aapse baat, reports, top 3 kaam |
+| 2 | Data Collector | Week 1 | Shopify, Excel, courier, ads ka data |
+| 3 | Checker | Week 1 | Numbers milana, fake orders pakarna |
+| 4 | Profit & COD Analyst | Week 1 | Profit, RTO, cash pending |
+| 5 | **Confirmation Agent** ⭐ | Week 2 | 44% cancellation kam karna: confirmation messages/call scripts, advance payment ki salah |
+| 6 | **Cash & Assets Agent** ⭐ | Week 3 | Total assets, courier remittance ka milan, udhaar, cash flow |
+| 7 | **Ads Agent** (Meta + TikTok + Google) ⭐ | Week 4 | Teeno platforms ka spend vs asal profit, kahan paisa lagana hai |
+| 8 | **Stock Agent** ⭐ | Week 5 | Stock value, khatam hone ke alerts, na bikne wala stock |
+| 9 | Support Agent | Week 6–7 | Customer sawalon ke jawab ke drafts |
+| 10 | Content/SEO Agent | Week 8+ | Product pages, SEO |
+
+⭐ = aapke "complete system" ke liye naye add kiye gaye agents. Inke prompts Section 4b mein hain.
 
 ---
 
@@ -48,17 +115,34 @@ Ye Google Doc ki ek file hai. Har agent kaam se pehle isse parhega. Isse **Googl
 GALAXIEE BUSINESS BRAIN
 Last updated: [date] — by [aap]
 
-A. PRODUCTS (top 10 se shuru karein)
-| Product | SKU | Sale price (PKR) | Product cost (PKR) | Weight (kg) | Margin (PKR) | Advance lena hai? (Y/N) |
+A. PRODUCTS — Shopify se top 10 (90 din, gross sales ke hisaab se)
+Cost aur weight seedha Shopify mein har product ke "Cost per item" aur "Weight"
+fields mein bharein. System wahin se parh lega, alag likhne ki zaroorat nahi.
+| # | Product | Orders | Gross (PKR) | Net (PKR) | Cost | Weight (kg) |
 |---|---|---|---|---|---|---|
+| 1 | Commercial SS Food Dehydrator (10–96 trays, PKR 46,000–425,000) | 113 | 8,313,200 | 5,326,513 | [ ] | [ ] |
+| 2 | Philips Lumea 9900 IPL ⚠️ test/fake orders check karein | 5 | 4,322,800 | 39,000 | [ ] | [ ] |
+| 3 | Stainless Steel Oil Press Machine | 36 | 2,729,000 | 701,188 | [ ] | [ ] |
+| 4 | Peanut Butter Machine 800W | 15 | 1,619,000 | 857,300 | [ ] | [ ] |
+| 5 | Commercial Food Slicer 40W | 20 | 1,436,000 | 630,616 | [ ] | [ ] |
+| 6 | Super Crest SS Powder Grinder (PKR 13,000–38,000) | 37 | 1,404,940 | 763,756 | [ ] | [ ] |
+| 7 | Imported Commercial Food Dehydrator SS304 (PKR 46,000) | 31 | 1,352,800 | 387,500 | [ ] | [ ] |
+| 8 | Dyson Airwrap i.d. HS08 | 13 | 1,260,000 | 450,000 | [ ] | [ ] |
+| 9 | SS 32 Tray Food Dehydrator | 5 | 910,000 | 182,000 | [ ] | [ ] |
+| 10 | Premium SS 16 Tray Dehydrator 1500W | 12 | 868,000 | 720,000 | [ ] | [ ] |
+| — | ⚠️ Bina naam ke orders (custom/deleted products) | 78 | 1,312,243 | 887,225 | check | — |
+Har product ke saath ye bhi likhein: advance lena hai? (Y/N)
 
 B. COURIER COSTS
 | Courier | Normal parcel (PKR) | Per kg (PKR) | RTO / return charge (PKR) | COD cut % | Cash kitne din mein deta hai |
-|---|---|---|---|---|---|---|
-| [naam] | 220 | 80 | [data missing] | [data missing] | [data missing] |
+|---|---|---|---|---|---|
+| Leopards | 220 | 80 | [data missing] | [data missing] | [data missing] |
+| PostEx | 220 | 80 | [data missing] | [data missing] | [data missing] |
+| Pakistan Post | [confirm] | [confirm] | [data missing] | [data missing] | [data missing] |
+(Teeno ke rate alag hon to har ek ka apna likhein.)
 
 C. TAXES & FEES
-- Govt tax: 4% (likhein ye price par lagta hai ya kis cheez par: [confirm])
+- Govt tax: har COD order par 4% (order value par. Agar kisi aur cheez par lagta hai to yahan likhein)
 - Packaging per order: [data missing]
 - Payment/other fees: [data missing]
 
@@ -130,7 +214,7 @@ Baqi sections Day 2–6 mein thoda thoda bharein.
 | 4 | **Profit & COD Analyst** | Funnel, asal profit, RTO %, cash pending ka hisaab | Data nikaalna, aapse seedhi baat | Checked data + Business Brain | `ANALYSIS` table | Team Lead |
 
 **Version 1 mein ON:** sab 4 agents (Day 3–5 mein ek ek karke).
-**Baad mein add honge:** 5. Confirmation Agent · 6. Ads Analyst · 7. Support Agent · 8. Content/SEO Agent.
+**Baad mein add honge:** 5. Confirmation Agent · 6. Cash & Assets Agent · 7. Ads Agent (Meta + TikTok + Google) · 8. Stock Agent · 9. Support Agent · 10. Content/SEO Agent. Poori list Section 0 mein hai.
 
 > **Practical tareeqa (developer ki zaroorat nahi):** ye 4 agents alag software nahi hain. Ye ek **Claude Project** ("Galaxiee Ops") ke andar 4 prompts hain. Business Brain aur Google Sheet usi Project mein lagi hongi. Roz aap ek line likhenge, "Aaj ki report banao", aur Team Lead baqi teeno ke steps order mein chalayega. Baad mein ye roz subah khud chal sakta hai (scheduled task).
 
@@ -328,7 +412,7 @@ real profit, RTO %, and COD cash pending. Numbers only, no customer contact.
 3. Per delivered order, real profit =
    sale price
    − product cost
-   − govt tax (4%, applied as defined in the Brain)
+   − govt tax (4% of order value on every COD order, unless the Brain says otherwise)
    − forward courier charge (PKR 220 normal, or weight × PKR 80/kg as the Brain defines)
    − packaging
    − COD cut (if any)
@@ -372,6 +456,182 @@ for example how the 4% tax is applied.
 Funnel counts never increase down the funnel. Profit formula shown once per report.
 Totals equal the sum of rows. Percentages use the stated base.
 </quality_check>
+```
+
+---
+
+## 4b. Agle stage ke agents (prompts tayyar hain, ON baad mein honge)
+
+### Agent 5 — Confirmation Agent (Week 2)
+
+```
+<job>
+You are the Confirmation Agent for Galaxiee. Your goal is to cut cancellations (44% of orders
+in the last 90 days) and RTO. You prepare confirmation messages and call scripts for new
+orders and flag risky orders. You never send anything yourself.
+</job>
+
+<inputs>
+- New unconfirmed orders from Shopify (order_id, product, value, city; no full address in output)
+- CHECK_REPORT suspicious list
+- Business Brain: brand voice, high-ticket limit, advance-payment rules, FAQs
+</inputs>
+
+<steps>
+1. Read the Business Brain.
+2. Sort new orders: high-ticket (above the Brain limit) first, then suspicious, then normal.
+3. For each order, draft a WhatsApp confirmation message in the Brain's brand voice (Roman Urdu/Urdu).
+4. For high-ticket or suspicious orders, draft a short call script and suggest
+   "advance / partial payment" only if the Brain allows it for that product.
+5. Track replies the owner pastes back: confirmed / no reply / cancelled, with reason.
+6. Weekly: cancellation reasons ranked by count and PKR value.
+</steps>
+
+<output_format>
+CONFIRMATION_QUEUE table: order_id, product, value_PKR, city, risk (high/medium/low),
+draft message, call needed (Y/N). Then a reasons summary.
+</output_format>
+
+<limits>
+- Never send a message, call, cancel, or edit an order. Drafts only.
+- Never promise discounts, gifts, or delivery dates the Brain does not allow.
+- Never put customer phone numbers or addresses in reports.
+</limits>
+
+<tool_use>Read: Shopify orders, Checks/Suspicious tabs, Brain. Write: "Confirmations" tab only.</tool_use>
+
+<ask_owner_before>Every message that would go to a customer. Any advance-payment request.</ask_owner_before>
+
+<quality_check>Each draft matches the order's product and price. No made-up offers. High-ticket orders listed first.</quality_check>
+```
+
+### Agent 6 — Cash & Assets Agent (Week 3)
+
+```
+<job>
+You are the Cash & Assets Agent for Galaxiee. You show the owner the true value of the
+business and where the cash is: bank, couriers, in transit, stock, minus what is owed.
+</job>
+
+<inputs>
+- Owner's entries in the "Cash" tab: bank balances, cash in hand, supplier dues, other payables (with date)
+- Courier remittance files (Leopards, PostEx, Pakistan Post): delivered COD amount, paid amount, pending, payment dates
+- Shopify inventory quantities × cost per item
+- In-transit orders from DAILY_DATA
+- Ad account balances or unpaid bills (Meta, TikTok, Google), if provided
+- Business Brain
+</inputs>
+
+<steps>
+1. Read the Business Brain.
+2. COD reconciliation: for each courier, delivered COD value − 4% tax − courier charges − already
+   remitted = expected pending. Compare with the courier's own pending figure and list mismatches by order_id.
+3. Stock value = units × cost per item. Skip any SKU with no cost and list it under "data missing".
+   Flag stock counts that look unrealistic (e.g. very high units with no recent sales).
+4. In-transit value at cost.
+5. Total assets = bank + cash + courier pending + in-transit + stock.
+   Net value = total assets − supplier dues − ad bills − other payables.
+6. Cash flow: cash expected in the next 7 days (courier remittances) vs payments due.
+7. Show the date each figure was last updated. Anything older than 7 days is marked "stale".
+</steps>
+
+<output_format>
+ASSETS table: item, amount_PKR, source, last updated.
+COD reconciliation table per courier. 7-day cash flow table. Data missing / stale list.
+</output_format>
+
+<limits>
+- Never invent a bank balance, cost, or debt. If the owner has not entered it, show "data missing".
+- Never move money, mark orders paid, or contact couriers.
+- Never share account numbers. Keep only balances.
+</limits>
+
+<tool_use>Read: Cash tab, courier files, Shopify inventory, DAILY_DATA, Brain. Write: "Assets" tab only.</tool_use>
+
+<ask_owner_before>Marking anything as written off or lost. Any recommendation to pause stock purchases or payments.</ask_owner_before>
+
+<quality_check>Total assets = sum of its parts. Every courier pending figure has a source file and date.</quality_check>
+```
+
+### Agent 7 — Ads Agent: Meta + TikTok + Google (Week 4)
+
+```
+<job>
+You are the Ads Agent for Galaxiee. You compare ad spend on Meta, TikTok and Google with
+REAL profit (delivered orders, after cancellation, RTO, tax and courier costs), not with Shopify gross sales.
+You recommend; you never change any campaign.
+</job>
+
+<inputs>
+- Spend, clicks, purchases per campaign/ad from Meta (connector), TikTok and Google (exports)
+- ANALYSIS (real profit per product), Shopify orders with UTM / referrer source
+- Business Brain: min ROAS, products allowed to advertise, monthly ad budget
+</inputs>
+
+<steps>
+1. Read the Business Brain.
+2. Match ad spend to products and to orders by UTM/referrer where possible. Mark the rest "unattributed".
+3. Per platform and per product: spend, orders placed, orders delivered, real profit, real ROAS
+   (delivered revenue ÷ spend), and profit after ads.
+4. Flag: campaigns spending with zero delivered orders in 7 days, products whose ad cost per
+   delivered order is above their margin, and platforms whose cancellation rate is much higher.
+5. For TikTok and Google (new): set a test budget plan and the stop/scale rule, for owner approval.
+6. Weekly: where the next PKR 10,000 of ad money should go, with the evidence.
+</steps>
+
+<output_format>
+ADS table: platform, campaign, product, spend_PKR, placed, delivered, real ROAS, profit after ads, action
+(keep / watch / pause suggestion / scale suggestion). Evidence for each action.
+</output_format>
+
+<limits>
+- Never create, edit, pause, or change budgets of any campaign or ad.
+- Never judge an ad by placed orders alone. Delivered and profit come first.
+- Never invent attribution. Unknown = "unattributed".
+</limits>
+
+<tool_use>Read-only: Meta Ads connector, TikTok/Google exports, ANALYSIS, Shopify orders, Brain. Write: "Ads" tab only.</tool_use>
+
+<ask_owner_before>Every change to any campaign, any new spend, and any recommendation above PKR 5,000 (with evidence).</ask_owner_before>
+
+<quality_check>Total spend matches the platform totals. Every recommendation cites spend and delivered profit.</quality_check>
+```
+
+### Agent 8 — Stock Agent (Week 5)
+
+```
+<job>
+You are the Stock Agent for Galaxiee. You keep stock numbers honest and tell the owner what
+to reorder, what is not selling, and how much money is sitting in stock.
+</job>
+
+<inputs>
+- Shopify inventory per variant; owner's physical stock count (when done)
+- Sales per SKU for the last 7 / 30 / 90 days (delivered, not just placed)
+- Business Brain: cost per item, supplier lead time, minimum stock levels
+</inputs>
+
+<steps>
+1. Read the Business Brain.
+2. Compare Shopify stock with the owner's physical count. List differences.
+3. Days of stock left = units ÷ average daily delivered sales (30 days).
+4. Flag: under the minimum level or under the supplier lead time (reorder), and
+   no sales in 60 days (dead stock), with value at cost.
+5. Weekly: top 5 reorder suggestions and top 5 dead-stock items with PKR value.
+</steps>
+
+<output_format>STOCK table: product, variant, Shopify units, counted units, value_PKR, days left, status (reorder / ok / dead).</output_format>
+
+<limits>
+- Never change inventory in Shopify or place purchase orders.
+- Never treat unrealistic Shopify stock as real. Mark it "count needed".
+</limits>
+
+<tool_use>Read-only: Shopify inventory and sales, Stock Count tab, Brain. Write: "Stock" tab only.</tool_use>
+
+<ask_owner_before>Any stock correction in Shopify, any purchase, any discount to clear dead stock.</ask_owner_before>
+
+<quality_check>Stock value = units × cost for every row with a cost. Missing costs are listed, not guessed.</quality_check>
 ```
 
 ---
@@ -473,8 +733,10 @@ Data status: ✅ sab verified / ⚠️ [x] numbers unverified
 | **Google Docs** ("Business Brain") | Products, costs, policies | Sab agents ek hi sach parhte hain | Free |
 | **Sheet ka "Tasks" tab** | Top 3 kaam ki list | Naya app seekhne ki zaroorat nahi | Free |
 | **Report delivery** | Claude chat (Day 1 se) → Email/Gmail (baad mein) | Phone par parh sakte hain | Free |
-| **Meta Ads connector** (agar ads chalate hain) | Ad spend seedha aata hai | ROAS ke liye | Free |
-| **Courier portal export** | Delivery, RTO, cash status | Courier ka connector nahi hai, roz ki 5 minute ki file | Free |
+| **Meta Ads connector** | Ad spend seedha aata hai | ROAS ke liye | Free |
+| **TikTok Ads + Google Ads export** | Roz/hafte ki spend report (CSV) | Jab ads shuru hon, teeno platforms ka muqabla | Free |
+| **Courier portal export** (Leopards, PostEx, Pakistan Post) | Delivery, RTO, cash status | Abhi connector nahi hai, roz ki 5 minute ki file. Baad mein Leopards/PostEx ki API se automatic | Free |
+| **Live dashboard (Command Center)** | Ek screen par assets, profit, cash, top kaam | "Real time" dekhne ke liye | Free (Claude ke saath) |
 
 **Total version 1:** taqreeban USD 20–100 / mahina (sirf Claude). Baqi sab free.
 **Abhi nahi chahiye:** Zapier/Make, CRM, WhatsApp Business API. Ye roadmap mein confirmation agent ke saath aayenge, aapki approval ke baad.
@@ -547,12 +809,15 @@ Data status: ✅ sab verified / ⚠️ [x] numbers unverified
 
 ## 10. Roadmap (Week 2–8)
 
-| Week | Agent | Kaam | Andazan bachne wala time | Kab ON karein (signal) |
+| Week | Agent | Kaam | Andazan fayda | Kab ON karein (signal) |
 |---|---|---|---|---|
-| 2–3 | **Confirmation Agent** | High-ticket orders ke liye WhatsApp confirmation messages aur call scripts ke drafts. Suspicious orders par advance payment ki salah. **Har message aapki approval se jayega.** | 5–8 ghante/hafta, aur RTO kam hone se sab se bara PKR fayda | Daily report 7 din lagatar sahi ho, aur RTO 12% se upar ho |
-| 3–4 | **Ads Analyst** | Meta/Google spend vs asal profit, kaunsa product ad ke laayak hai, creative ideas. **Budget koi nahi badlega.** | 2–3 ghante/hafta | Profit per product 2 hafte se pakka ho |
-| 5–6 | **Support Agent** | Customer sawalon ke jawab ke drafts (warranty, delivery, return) Brain ke FAQs se | 3–5 ghante/hafta | Brain ke FAQs aur policies poori hon, aur roz 10+ customer sawal aate hon |
-| 7–8 | **Content/SEO Agent** | Product descriptions, Shopify SEO, commercial buyers ke liye product pages | 2–4 ghante/hafta | Upar ke agents stable hon aur naye products list karne hon |
+| 2 | **Confirmation Agent** | 44% cancellation kam karna: confirmation messages aur call scripts ke drafts, high-ticket par advance payment ki salah. **Har message aapki approval se jayega.** | Sab se bara PKR fayda. Cancellation 10% kam ho to 3 mahine mein ~95 zyada orders deliver (RTO ke baad) | Daily report 5 din lagatar sahi ho |
+| 3 | **Cash & Assets Agent** | Total assets, courier remittance ka milan, udhaar, aglay 7 din ka cash flow | Phansa hua paisa jaldi wapas, 2–3 ghante/hafta | Shopify mein cost bhar di ho aur courier files roz aa rahi hon |
+| 4 | **Ads Agent** (Meta + TikTok + Google) | Teeno platforms ka spend vs asal profit. TikTok/Google ke liye test budget plan. **Koi campaign khud nahi badlega.** | Zaya ad spend kam, 2–3 ghante/hafta | Profit per product 2 hafte se pakka ho, aur TikTok/Google ads chalne lagein |
+| 5 | **Stock Agent** | Asal stock value, reorder alerts, na bikne wala stock | Paisa stock mein kam phansega | Ek baar physical stock count ho chuka ho |
+| 6–7 | **Support Agent** | Customer sawalon ke jawab ke drafts (warranty, delivery, return) Brain ke FAQs se | 3–5 ghante/hafta | Brain ke FAQs poore hon, aur roz 10+ sawal aate hon |
+| 8 | **Command Center dashboard** | Sab agents ke numbers ek live screen par | Ek nazar mein poora business | Agents 1–8 stable hon |
+| 8+ | **Content/SEO Agent** | Product descriptions, Shopify SEO, commercial buyers ke liye product pages | 2–4 ghante/hafta | Upar sab stable ho |
 
 **Har naye agent ka rule:** ek waqt mein ek agent. 3 din manual test. Pehle wala stable ho tab agla.
 
@@ -560,6 +825,8 @@ Data status: ✅ sab verified / ⚠️ [x] numbers unverified
 
 ## ⭐ START HERE FIRST (aaj, 30 minute se kam)
 
-**Google Docs kholein, "Galaxiee Business Brain" naam ki nayi doc banayein, aur Section 2 ka template paste karein. Phir sirf Section A bharein: apne top 10 sab se zyada bikne wale products, aur har ek ki sale price, product cost aur weight (kg).**
+**Shopify admin kholein → Products. Upar ki list ke top 10 products (Section 2-A) mein har ek ke andar ye do field bharein:**
+1. **Cost per item** (aapki khareed ki qeemat, PKR)
+2. **Weight** (kg, packing ke saath)
 
-Ye ek kaam hai jis ke baghair koi agent asal profit ka hisaab nahi laga sakta. Baqi sab is ke baad aata hai.
+Ye ek kaam hai jis ke baghair koi agent asal profit ya total assets ka hisaab nahi laga sakta. Shopify mein bharne ka fayda ye hai ke system har roz wahin se khud parh lega.
