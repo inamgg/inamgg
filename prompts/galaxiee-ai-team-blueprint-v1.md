@@ -153,7 +153,11 @@ B. COURIER COSTS
 B2. ADDA BILTY (heavy maal: 40 kg se 200 kg tak)
 | Transporter / adda | Kin cities ke liye | Rate (per kg ya per parcel) | Loading / labour (PKR) | Payment kaise aati hai (advance / customer adda par deta hai / transporter cash laata hai) | Paisa kitne din mein |
 |---|---|---|---|---|---|
-| [naam] | [ ] | [ ] | [ ] | [ ] | [ ] |
+| By Train (railway) | city ke hisaab se | har baar alag (asli kiraya log hoga) | [ ] | [confirm] | [ ] |
+| Peshawar Afridi | city ke hisaab se | har baar alag | [ ] | [confirm] | [ ] |
+| New Punjab Karachi | city ke hisaab se | har baar alag | [ ] | [confirm] | [ ] |
+Rate fixed nahi hota, city to city badalta hai. Isliye estimate nahi lagega: har bilty ka
+asli kiraya Bilty Log mein likha jayega aur profit usi se nikalega.
 Rule: product ka weight 40 kg ya zyada ho to system courier (weight × PKR 80) aur adda bilty,
 dono ka kharcha nikaal kar sasta rasta batayega. Faisla aap karenge.
 Har bilty parcel Sheet ke "Bilty Log" tab mein jayega: order_id, bilty no, transporter,
