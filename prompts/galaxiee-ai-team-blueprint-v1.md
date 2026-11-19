@@ -34,9 +34,12 @@
 
 **Shopify data mein masle (system banane se pehle theek karne honge):**
 - Kisi product mein **cost per item** nahi bhara, aur sab ka **weight 0 kg** hai. Inke baghair profit ka hisaab nahi ho sakta.
-- Stock ke numbers asli nahi lagte. Misaal: Dyson Airstrait ke 1,319 units × PKR 79,000 = PKR 10.4 crore. Asal stock count karke Shopify mein theek karna hoga, warna "total assets" galat aayenge.
-- "Philips Lumea 9900": 5 orders mein 110 units, gross PKR 4.3M lekin net sirf PKR 39,000. Ye test ya fake orders lagte hain.
-- 78 orders bina product naam ke hain (PKR 1.3M). Shayad custom/draft orders ya delete hue products.
+- **Shopify ka stock sahi nahi hai (aapne confirm kiya).** Products do qism ke hain:
+  - **Apna stock:** godown mein para maal. Iska asli count Shopify mein theek karna hai. Ye "total assets" mein ginta hai.
+  - **Market se khareed:** stock nahi hota, order aane par market se khareed kar dispatch hota hai. Har order par khareed ki asli qeemat Sheet mein note hogi, taake us order ka profit sahi nikle. Ye assets mein nahi ginta.
+  - Har product par Shopify mein tag lagayein: `stock` ya `market-buy`. System isi se farq karega.
+- "Philips Lumea 9900": 5 orders mein 110 units, gross PKR 4.3M lekin net sirf PKR 39,000. Ye test ya fake orders lagte hain. **Aapki confirmation baqi hai.**
+- 78 orders bina product naam ke (PKR 1.3M): **aapne confirm kiya ke ye asli orders hain.** System inhein normal orders ki tarah ginega.
 
 ---
 
@@ -130,8 +133,8 @@ fields mein bharein. System wahin se parh lega, alag likhne ki zaroorat nahi.
 | 8 | Dyson Airwrap i.d. HS08 | 13 | 1,260,000 | 450,000 | [ ] | [ ] |
 | 9 | SS 32 Tray Food Dehydrator | 5 | 910,000 | 182,000 | [ ] | [ ] |
 | 10 | Premium SS 16 Tray Dehydrator 1500W | 12 | 868,000 | 720,000 | [ ] | [ ] |
-| — | ⚠️ Bina naam ke orders (custom/deleted products) | 78 | 1,312,243 | 887,225 | check | — |
-Har product ke saath ye bhi likhein: advance lena hai? (Y/N)
+| — | Bina naam ke orders (asli orders, aapne confirm kiya) | 78 | 1,312,243 | 887,225 | order par | — |
+Har product ke saath ye bhi likhein: (1) type: `stock` ya `market-buy`, (2) advance lena hai? (Y/N). `market-buy` products ki cost har order par alag ho sakti hai, isliye wo Sheet ke "Purchases" tab mein har order ke saath likhi jayegi.
 
 B. COURIER COSTS
 | Courier | Normal parcel (PKR) | Per kg (PKR) | RTO / return charge (PKR) | COD cut % | Cash kitne din mein deta hai |
@@ -411,7 +414,7 @@ real profit, RTO %, and COD cash pending. Numbers only, no customer contact.
 2. Funnel counts and %: placed → confirmed → dispatched → delivered → returned (RTO) → cash received.
 3. Per delivered order, real profit =
    sale price
-   − product cost
+   − product cost (`stock` products: cost per item from Shopify; `market-buy` products: the actual purchase price logged for that order in the Purchases tab)
    − govt tax (4% of order value on every COD order, unless the Brain says otherwise)
    − forward courier charge (PKR 220 normal, or weight × PKR 80/kg as the Brain defines)
    − packaging
@@ -526,7 +529,7 @@ business and where the cash is: bank, couriers, in transit, stock, minus what is
 1. Read the Business Brain.
 2. COD reconciliation: for each courier, delivered COD value − 4% tax − courier charges − already
    remitted = expected pending. Compare with the courier's own pending figure and list mismatches by order_id.
-3. Stock value = units × cost per item. Skip any SKU with no cost and list it under "data missing".
+3. Stock value = units × cost per item, for `stock` products only (`market-buy` products are never stock). Skip any SKU with no cost and list it under "data missing".
    Flag stock counts that look unrealistic (e.g. very high units with no recent sales).
 4. In-transit value at cost.
 5. Total assets = bank + cash + courier pending + in-transit + stock.
@@ -607,13 +610,15 @@ to reorder, what is not selling, and how much money is sitting in stock.
 
 <inputs>
 - Shopify inventory per variant; owner's physical stock count (when done)
+- Product type tag in Shopify: `stock` (held in the warehouse) or `market-buy` (bought from the market after an order arrives)
 - Sales per SKU for the last 7 / 30 / 90 days (delivered, not just placed)
 - Business Brain: cost per item, supplier lead time, minimum stock levels
 </inputs>
 
 <steps>
 1. Read the Business Brain.
-2. Compare Shopify stock with the owner's physical count. List differences.
+2. Only `stock` products have inventory. Ignore Shopify quantities for `market-buy` products and never count them as assets.
+   For `stock` products, compare Shopify stock with the owner's physical count and list differences.
 3. Days of stock left = units ÷ average daily delivered sales (30 days).
 4. Flag: under the minimum level or under the supplier lead time (reorder), and
    no sales in 60 days (dead stock), with value at cost.
