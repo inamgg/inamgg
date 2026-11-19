@@ -9,6 +9,8 @@
 | Products | Commercial products, price PKR 20,000 se 500,000 |
 | Data | Shopify + Excel sheet |
 | Couriers | Leopards, PostEx, Pakistan Post Office |
+| Heavy maal (40–50 kg se 200 kg tak) | **Adda bilty** (goods transport) se jata hai |
+| Courier API | Aapke paas hai. Kis courier ki: **confirm karni hai** |
 | Courier charges | Normal parcel PKR 220, weight par PKR 80 per kg |
 | Govt tax | Har COD order par 4% |
 | RTO (wapas aane wale parcel) | 15–20% |
@@ -38,7 +40,7 @@
   - **Apna stock:** godown mein para maal. Iska asli count Shopify mein theek karna hai. Ye "total assets" mein ginta hai.
   - **Market se khareed:** stock nahi hota, order aane par market se khareed kar dispatch hota hai. Har order par khareed ki asli qeemat Sheet mein note hogi, taake us order ka profit sahi nikle. Ye assets mein nahi ginta.
   - Har product par Shopify mein tag lagayein: `stock` ya `market-buy`. System isi se farq karega.
-- "Philips Lumea 9900": 5 orders mein 110 units, gross PKR 4.3M lekin net sirf PKR 39,000. Ye test ya fake orders lagte hain. **Aapki confirmation baqi hai.**
+- "Philips Lumea 9900": 5 orders mein 110 units, gross PKR 4.3M, net sirf PKR 39,000. **Aapne kaha ke inhein cancel samjhein.** System inhein sales, orders aur profit mein nahi ginega.
 - 78 orders bina product naam ke (PKR 1.3M): **aapne confirm kiya ke ye asli orders hain.** System inhein normal orders ki tarah ginega.
 
 ---
@@ -51,7 +53,8 @@ Jab poora system ban jayega (Week 8 tak), to aap phone par ek screen kholenge au
 | Hissa | Kahan se aayega | Kitna "live" |
 |---|---|---|
 | Bank + cash in hand | Aap khud likhenge (2 minute) | Roz/hafte mein ek baar |
-| COD cash courier ke paas (Leopards, PostEx, Post Office) | Courier portal ki file/API | Roz |
+| COD cash courier ke paas (Leopards, PostEx) | Courier API se automatic | Har ghante |
+| Post Office + adda bilty ka paisa | Aap phone se entry karenge (1 minute per parcel) | Jab parcel jaye ya paisa aaye |
 | Raste mein parcels (cost par) | Shopify + courier | Roz |
 | Godown ka stock (cost par) | Shopify inventory × cost per item | Live (stock theek hone ke baad) |
 | **Minus:** supplier ka udhaar, ads ke bill | Aap likhenge + ad accounts | Roz/hafte |
@@ -67,7 +70,9 @@ Jab poora system ban jayega (Week 8 tak), to aap phone par ek screen kholenge au
 
 **"Real time" ki imaandar tasveer:**
 - **Live:** Shopify orders aur Meta ads. Ye dono connector se seedhe aate hain.
-- **Roz subah:** Leopards, PostEx aur Post Office ka status, aur TikTok/Google ads. Shuru mein file upload, baad mein Leopards aur PostEx ki API se automatic (unki merchant API hai). Post Office ka data shayad hamesha manual rahega.
+- **Har ghante (automatic):** Leopards aur PostEx ka status aur COD cash, aapki courier API se.
+- **Roz subah:** TikTok/Google ads (jab shuru hon).
+- **Aap entry karenge:** Post Office aur adda bilty ke parcels. Inki koi API nahi hai.
 - **Aap likhenge:** bank balance aur supplier ka udhaar. Isse koi software khud nahi jaan sakta.
 
 **Agents (final team, 8 agents, ek ek karke ON honge):**
@@ -124,7 +129,7 @@ fields mein bharein. System wahin se parh lega, alag likhne ki zaroorat nahi.
 | # | Product | Orders | Gross (PKR) | Net (PKR) | Cost | Weight (kg) |
 |---|---|---|---|---|---|---|
 | 1 | Commercial SS Food Dehydrator (10–96 trays, PKR 46,000–425,000) | 113 | 8,313,200 | 5,326,513 | [ ] | [ ] |
-| 2 | Philips Lumea 9900 IPL ⚠️ test/fake orders check karein | 5 | 4,322,800 | 39,000 | [ ] | [ ] |
+| ✕ | Philips Lumea 9900 IPL: cancel (aapne kaha), ginti mein nahi | 5 | 4,322,800 | 39,000 | — | — |
 | 3 | Stainless Steel Oil Press Machine | 36 | 2,729,000 | 701,188 | [ ] | [ ] |
 | 4 | Peanut Butter Machine 800W | 15 | 1,619,000 | 857,300 | [ ] | [ ] |
 | 5 | Commercial Food Slicer 40W | 20 | 1,436,000 | 630,616 | [ ] | [ ] |
@@ -133,6 +138,7 @@ fields mein bharein. System wahin se parh lega, alag likhne ki zaroorat nahi.
 | 8 | Dyson Airwrap i.d. HS08 | 13 | 1,260,000 | 450,000 | [ ] | [ ] |
 | 9 | SS 32 Tray Food Dehydrator | 5 | 910,000 | 182,000 | [ ] | [ ] |
 | 10 | Premium SS 16 Tray Dehydrator 1500W | 12 | 868,000 | 720,000 | [ ] | [ ] |
+| 11 | Snowflake Ice Shaver Machine | 4 | 498,000 | 270,000 | [ ] | [ ] |
 | — | Bina naam ke orders (asli orders, aapne confirm kiya) | 78 | 1,312,243 | 887,225 | order par | — |
 Har product ke saath ye bhi likhein: (1) type: `stock` ya `market-buy`, (2) advance lena hai? (Y/N). `market-buy` products ki cost har order par alag ho sakti hai, isliye wo Sheet ke "Purchases" tab mein har order ke saath likhi jayegi.
 
@@ -143,6 +149,15 @@ B. COURIER COSTS
 | PostEx | 220 | 80 | [data missing] | [data missing] | [data missing] |
 | Pakistan Post | [confirm] | [confirm] | [data missing] | [data missing] | [data missing] |
 (Teeno ke rate alag hon to har ek ka apna likhein.)
+
+B2. ADDA BILTY (heavy maal: 40 kg se 200 kg tak)
+| Transporter / adda | Kin cities ke liye | Rate (per kg ya per parcel) | Loading / labour (PKR) | Payment kaise aati hai (advance / customer adda par deta hai / transporter cash laata hai) | Paisa kitne din mein |
+|---|---|---|---|---|---|
+| [naam] | [ ] | [ ] | [ ] | [ ] | [ ] |
+Rule: product ka weight 40 kg ya zyada ho to system courier (weight × PKR 80) aur adda bilty,
+dono ka kharcha nikaal kar sasta rasta batayega. Faisla aap karenge.
+Har bilty parcel Sheet ke "Bilty Log" tab mein jayega: order_id, bilty no, transporter,
+weight, freight, loading, status (bheja / pohanch gaya / customer ne utha liya / wapas), payment status.
 
 C. TAXES & FEES
 - Govt tax: har COD order par 4% (order value par. Agar kisi aur cheez par lagta hai to yahan likhein)
@@ -292,7 +307,9 @@ table called DAILY_DATA. You only collect and format. You never analyse or judge
 <inputs>
 - Shopify orders for the report date (via Shopify connector, or the owner's CSV export)
 - The owner's Excel / Google Sheet (order status updates, confirmations)
-- Courier status file(s) (CSV/Excel export from each courier portal)
+- Courier data: Leopards / PostEx via their API (auto-synced into the sheet); Pakistan Post status entered by the owner
+- Bilty Log tab: heavy parcels sent by adda bilty (bilty no, transporter, weight, freight, loading, status, payment)
+- Purchases tab: actual market purchase price per order for `market-buy` products
 - Ad spend for the date (Meta Ads / Google Ads, if connected or exported)
 - Business Brain (read first: courier names, SKUs)
 </inputs>
@@ -302,7 +319,9 @@ table called DAILY_DATA. You only collect and format. You never analyse or judge
 2. Pull all orders created on the report date (PKT) plus any older orders whose status
    changed on that date (dispatched, delivered, returned, cash received).
 3. For each order record: order_id, date, customer_city, SKU, product, qty, order_value_PKR,
-   confirmation_status, courier, tracking_no, courier_status, cod_cash_status, cash_received_date.
+   confirmation_status, shipping_method (Leopards / PostEx / Pakistan Post / Adda bilty), tracking_or_bilty_no,
+   weight_kg, shipping_status, cod_cash_status, cash_received_date.
+   Exclude the Philips Lumea 9900 orders (owner: treat as cancelled).
 4. Record ad spend per platform for the date.
 5. Record the source of every number (Shopify / Excel / courier file / Meta / Google).
 6. If a source is missing or empty, write "SOURCE MISSING: [name]". Do not fill gaps.
@@ -416,7 +435,8 @@ real profit, RTO %, and COD cash pending. Numbers only, no customer contact.
    sale price
    − product cost (`stock` products: cost per item from Shopify; `market-buy` products: the actual purchase price logged for that order in the Purchases tab)
    − govt tax (4% of order value on every COD order, unless the Brain says otherwise)
-   − forward courier charge (PKR 220 normal, or weight × PKR 80/kg as the Brain defines)
+   − shipping cost: courier charge (PKR 220 normal, or weight × PKR 80/kg as the Brain defines),
+     or for adda bilty the freight + loading logged in the Bilty Log
    − packaging
    − COD cut (if any)
    − ad spend share (day's ad spend ÷ day's delivered orders)
@@ -644,7 +664,7 @@ to reorder, what is not selling, and how much money is sitting in stock.
 ## 5. Workflow
 
 ### Daily (roz, PKT)
-1. **9:30 — Aap (5 minute):** courier portal se kal ki status file download karke Project mein upload karein. Excel update ho to wo bhi. *(Jab courier connect ho jayega to ye step khatam ho jayega.)*
+1. **Pura din, automatic:** Leopards aur PostEx ka data API se har ghante Sheet mein aata hai. **Aap (jab zaroorat ho):** Post Office aur adda bilty ke parcels, aur market se khareed ki qeemat, phone se entry karein.
 2. **10:00 — Aap:** Project mein likhein "Aaj ki report banao" (ya scheduled task khud chalega).
 3. **Team Lead → Data Collector:** Shopify + Excel + courier file + ad spend se `DAILY_DATA` banata hai.
 4. **Data Collector → Checker:** numbers milata hai aur suspicious orders dhoondta hai.
@@ -740,7 +760,8 @@ Data status: ✅ sab verified / ⚠️ [x] numbers unverified
 | **Report delivery** | Claude chat (Day 1 se) → Email/Gmail (baad mein) | Phone par parh sakte hain | Free |
 | **Meta Ads connector** | Ad spend seedha aata hai | ROAS ke liye | Free |
 | **TikTok Ads + Google Ads export** | Roz/hafte ki spend report (CSV) | Jab ads shuru hon, teeno platforms ka muqabla | Free |
-| **Courier portal export** (Leopards, PostEx, Pakistan Post) | Delivery, RTO, cash status | Abhi connector nahi hai, roz ki 5 minute ki file. Baad mein Leopards/PostEx ki API se automatic | Free |
+| **Courier API + Google Apps Script** (Leopards, PostEx) | Har ghante delivery, RTO aur cash status Sheet mein | Aapki API key Script ki settings mein rahegi, chat mein kabhi nahi | Free |
+| **Entry form** (Post Office, adda bilty, market khareed, bank) | Phone se 1 minute ki entry | Jin cheezon ki API nahi, unke liye | Free (Google Form ya Sheet) |
 | **Live dashboard (Command Center)** | Ek screen par assets, profit, cash, top kaam | "Real time" dekhne ke liye | Free (Claude ke saath) |
 
 **Total version 1:** taqreeban USD 20–100 / mahina (sirf Claude). Baqi sab free.
@@ -825,6 +846,31 @@ Data status: ✅ sab verified / ⚠️ [x] numbers unverified
 | 8+ | **Content/SEO Agent** | Product descriptions, Shopify SEO, commercial buyers ke liye product pages | 2–4 ghante/hafta | Upar sab stable ho |
 
 **Har naye agent ka rule:** ek waqt mein ek agent. 3 din manual test. Pehle wala stable ho tab agla.
+
+---
+
+## 11. App banana: kharcha, aur data auto aayega ya manual
+
+**Teen raste:**
+| Rasta | Kya milega | Kharcha | Kab |
+|---|---|---|---|
+| **A. Command Center + Google Sheet** (pehle yahi) | Phone aur PC par ek link. Data Sheet mein. Apps Script se har ghante auto-sync | Claude plan ke ilawa ~0 | Week 1–8 |
+| **B. Apni web app (PWA)** | Galaxiee ki apni app: phone ki home screen par icon, login, entry forms, aur sab data ek database mein | Hosting + database: free se ~USD 45/mahina tak *(current price check karein)*. Banwane ka: main Claude Code se banaun to sirf Claude plan (Max behtar). Developer se banwayen to unka quote lein (rough andaza PKR 1.5–5 lakh; 2–3 quotes lein) | Jab rasta A ek mahina sahi chal chuka ho |
+| **C. Play Store / App Store app** | Store par listed app | Google Play USD 25 ek baar, Apple USD 99/saal, aur banwana mehenga | Zaroorat nahi. PWA phone par app ki tarah hi chalti hai |
+
+Rasta A ka data structure hi rasta B mein jayega. Is liye A se shuru karne mein kuch zaya nahi hota.
+
+**Kaunsa data khud aayega, kaunsa aap dalenge:**
+| Data | Kaise | Aapka time |
+|---|---|---|
+| Shopify orders, products, price | Auto | 0 |
+| Leopards / PostEx status, RTO, COD cash | Auto (aapki API) | 0 |
+| Meta ads spend | Auto (connector) | 0 |
+| TikTok / Google ads | Pehle roz ki CSV, baad mein API se auto | 2 minute/din, phir 0 |
+| Product cost + weight | Ek baar Shopify mein | Ek baar |
+| Market se khareed ki qeemat | Har market-buy order par 1 entry | ~30 second/order |
+| Pakistan Post + adda bilty parcels | Phone se entry (bilty no, freight, status) | ~1 minute/parcel |
+| Bank balance, supplier udhaar | Aap likhenge | 2 minute/din ya hafte mein ek baar |
 
 ---
 
